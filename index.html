@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title></title>
+<style>
+* {
+	font-size: 100%;
+	margin: 0;
+	padding: 0;
+}
+ul, li {
+	list-style: none;
+}
+h1 {
+	font-size: 150%;
+	font-weight: bold;
+	margin: 1.5em 0;
+	text-align: center;
+}
+.mod-slider {
+	height: 450px;
+	margin: 0 auto;
+	width: 900px;
+}
+.mod-slider ul {
+	overflow: hidden;
+}
+.mod-slider li {
+	float: left;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="jquery.imageslider.js"></script>
+<script>
+$(function() {
+	$('.js-imageslider').imageslider({
+		slideItems: '.mod-slider-item',
+		slideContainer: '.mod-slider-list'
+	});
+});
+</script>
+</head>
+<body>
+
+<h1>jQuery Image Slider.js</h1>
+
+<div class="mod-slider js-imageslider">
+<ul class="mod-slider-list">
+<li class="mod-slider-item"><img src="http://placehold.it/900x450&amp;text=No.01" alt=""></li>
+<li class="mod-slider-item"><img src="http://placehold.it/900x450&amp;text=No.02" alt=""></li>
+</ul>
+<!-- /.js-imageslider --></div>
+	
+</body>
+</html>
