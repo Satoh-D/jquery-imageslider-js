@@ -48,6 +48,8 @@
 				$slideItemFirst = self.$slideContainer.find(self.settings.slideItems).eq(0),
 				slideItemFirstW = $slideItemFirst.width();
 
+		console.log($slideItemFirst);
+
 		/*
 		$slideItemFirst.animate({
 			marginLeft: parseInt($slideItemFirst.css('margin-left'), 10) - self.settings.slideDistance
