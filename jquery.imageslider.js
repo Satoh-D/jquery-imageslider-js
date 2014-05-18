@@ -16,7 +16,7 @@
 			defaults = {
 				slideItems: '.is-item',
 				slideContainer: '.is-container',
-				slideDistance: 1,
+				slideDistance: 5,
 				slideDuration: 1,
 				slideEasing: 'linear'
 			};
@@ -48,20 +48,19 @@
 				$slideItemFirst = self.$slideContainer.find(self.settings.slideItems).eq(0),
 				slideItemFirstW = $slideItemFirst.width();
 
-		console.log($slideItemFirst);
-
-		/*
 		$slideItemFirst.animate({
 			marginLeft: parseInt($slideItemFirst.css('margin-left'), 10) - self.settings.slideDistance
 		}, self.settings.slideDuration, self.settings.slideEasing, function() {
-			var firstItemML = Math.abs(parseInt($slideItemFirst.css('margin-left'), 10));
-
-			if(firstItemML > slideItemFirstW) self.$slideContainer.append($slideItemFirst);
+			if(Math.abs(parseInt($slideItemFirst.css('margin-left'), 10)) > slideItemFirstW) {
+				$slideItemFirst.appendTo(self.$slideContainer).css('margin-left', 0);
+			}
 			self.startSlide();
 		});
-		*/
 	}
 	Plugin.prototype.stopSlide = function() {
+		var self = this;
+
+		self.$slideItems.stop();
 	}
 
 	// 親要素のサイズを設定
