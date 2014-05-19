@@ -16,18 +16,22 @@
 			defaults = {
 				slideItems: '.is-item',
 				slideContainer: '.is-container',
-				slideDistance: 5,
+				slideDistance: 1,
 				slideDuration: 1,
-				slideEasing: 'linear'
+				slideEasing: 'linear',
+				resizable: false
 			};
 
 	function Plugin(element, options) {
-		this.element = element;
-		this.settings = $.extend({}, defaults, options);
-		this._defaults = defaults;
-		this._name = pluginName;
+		var self = this;
 
-		this.init();
+		self.element = element;
+		self.settings = $.extend({}, defaults, options);
+		self._defaults = defaults;
+		self._name = pluginName;
+
+		$(window).on('load', function() { self.init(); });
+		// this.init();
 	}
 
 	Plugin.prototype.init = function() {
@@ -36,10 +40,17 @@
 		self.$element = $(self.element);
 		self.$slideContainer = self.$element.find(self.settings.slideContainer);
 		self.$slideItems = self.$element.find(self.settings.slideItems);
+		self.elementW = self.$element.width();
+		self.slideContainerW = calcContainerSize(self.$slideContainer, self.$slideItems);
 
-		calcContainerSize(self.$slideContainer, self.$slideItems);
+		self.$slideContainer.width(self.slideContainerW);
 		self.$element.css('overflow', 'hidden');
 
+		if(self.settings.resizable) {
+			$(window).on('resize', function(){ self.resizeContainer(); });
+		}
+
+		self.resizeContainer();
 		self.startSlide();
 
 	}
@@ -48,6 +59,9 @@
 				$slideItemFirst = self.$slideContainer.find(self.settings.slideItems).eq(0),
 				slideItemFirstW = $slideItemFirst.width();
 
+		// スライドする要素の中で、一番最初の要素のmargin-leftを減らしていく
+		// 画面の外に出たら一番後ろに持っていく
+		// 以下、繰り返し
 		$slideItemFirst.animate({
 			marginLeft: parseInt($slideItemFirst.css('margin-left'), 10) - self.settings.slideDistance
 		}, self.settings.slideDuration, self.settings.slideEasing, function() {
@@ -62,27 +76,51 @@
 
 		self.$slideItems.stop();
 	}
+	Plugin.prototype.resizeContainer = function() {
+		var self = this,
+				elementW = self.$element.width(),
+				itemsW = self.slideContainerW;
+
+		// self.$slideContainerの横幅がself.$elementの横幅より小さい時、スライドする要素をコピー
+		// if(elementW < self.slideContainerW) return false;
+
+		// スライドを一旦ストップ
+		self.stopSlide();
+
+		// self.$elementの横幅を超えるまでスライドする要素をコピーする
+		adjustItemsLength(self.$slideContainer, self.$slideItems, elementW, itemsW);
+
+		// 各種要素更新
+		self.$slideItems = self.$element.find(self.settings.slideItems);
+		self.slideContainerW = calcContainerSize(self.$slideContainer, self.$slideItems);
+		self.elementW = elementW;
+		self.$slideContainer.width(self.slideContainerW);
+
+		// スライドを再スタートする
+		self.startSlide();
+	}
+
+	function adjustItemsLength($container, $items, elementW, itemsW) {
+		$items.each(function() {
+			if(itemsW > elementW * 2) return false;
+
+			var $clone = $(this).clone().css('margin-left', 0);
+
+			$clone.appendTo($container);
+			itemsW += $clone.width();
+		});
+	} // end of adjustItemsLength
 
 	// 親要素のサイズを設定
 	function calcContainerSize($container, $items) {
 		var containerW = $container.width(),
-				containerH = $container.height(),
-				resultW = 0,
-				resultH = 0;
+				resultW = 0;
 
 		$items.each(function() {
-			var $this = $(this),
-					thisW = $this.width(),
-					thisH = $this.height();
-
-			resultW += thisW;
-			if(thisH > resultH) resultH = thisH;
+			resultW += $(this).width();
 		});
 
-		$container.css({
-			width: resultW,
-			height: resultH
-		});
+		return resultW;
 	} // end of calcContainerSize()
 
 	$.fn[pluginName] = function(options) {

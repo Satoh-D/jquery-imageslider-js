@@ -23,9 +23,11 @@ h1 {
 .mod-slider {
 	height: 450px;
 	margin: 0 auto;
-	width: 900px;
+	/*width: 900px;*/
+	width: 100%;
 }
 .mod-slider ul {
+	height: 450px;
 	overflow: hidden;
 }
 .mod-slider li {
@@ -33,12 +35,16 @@ h1 {
 }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="jquery.js"><\/script>')</script>
 <script src="jquery.imageslider.js"></script>
 <script>
 $(function() {
 	$('.js-imageslider').imageslider({
 		slideItems: '.mod-slider-item',
-		slideContainer: '.mod-slider-list'
+		slideContainer: '.mod-slider-list',
+		slideDistance: 5,
+		slideDuratin: 800,
+		resizable: true
 	});
 });
 </script>
@@ -49,8 +55,9 @@ $(function() {
 
 <div class="mod-slider js-imageslider">
 <ul class="mod-slider-list">
-<li class="mod-slider-item"><img src="http://placehold.it/900x450&amp;text=No.01" alt=""></li>
-<li class="mod-slider-item"><img src="http://placehold.it/900x450&amp;text=No.02" alt=""></li>
+<li class="mod-slider-item"><img src="http://placehold.it/900x450&amp;text=No.01" width="900" alt=""></li>
+<li class="mod-slider-item"><img src="http://placehold.it/900x450&amp;text=No.02" width="900" alt=""></li>
+<li class="mod-slider-item"><img src="http://placehold.it/900x450&amp;text=No.03" width="900" alt=""></li>
 </ul>
 <!-- /.js-imageslider --></div>
 	
