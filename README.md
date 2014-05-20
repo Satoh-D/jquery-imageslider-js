@@ -5,6 +5,10 @@ __Image Slider like "Ticker"__
 
 ティッカーふうに左右に流れるタイプのイメージスライダーです。
 
+## デモ - Demo
+
+[Demo Page](https://dl.dropboxusercontent.com/u/21601359/140520_imagslider/index.html)
+
 ## サンプル - Usage
 
 ```html
@@ -41,3 +45,7 @@ $(function() {
 - slideDistance: スライドする距離を指定します(px)
 - slideDuration: スライドする速さを指定します(ms)
 - resazable: 横幅の可変に対応します
+
+## クレジット - Credit
+
+Copyright 2014 Sato Daiki.
