@@ -6,7 +6,7 @@
  * @copyright   2014 Daiki Sato
  * @author      Daiki Sato <sato.dik@gmail.com>
  * @link        http://orememo-v2.tumblr.com/
- * @version     1.0.0
+ * @version     1.1.0
  * @since       2014.05.16
  */
 
