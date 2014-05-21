@@ -45,6 +45,7 @@ $(function() {
 - slideDistance: スライドする距離を指定します(px)
 - slideDuration: スライドする速さを指定します(ms)
 - resazable: 横幅の可変に対応します
+- reverse: スライドする方向を左->右にします(通常時は右->左)
 
 ## クレジット - Credit
 
