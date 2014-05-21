@@ -19,7 +19,8 @@
 				slideDistance: 1,
 				slideDuration: 1,
 				slideEasing: 'linear',
-				resizable: false
+				resizable: false,
+				reverse: false
 			};
 
 	function Plugin(element, options) {
@@ -42,6 +43,7 @@
 		self.$slideItems = self.$element.find(self.settings.slideItems);
 		self.elementW = self.$element.width();
 		self.slideContainerW = calcContainerSize(self.$slideContainer, self.$slideItems);
+		self.slideItemsLength = self.$slideItems.length;
 
 		self.$slideContainer.width(self.slideContainerW);
 		self.$element.css('overflow', 'hidden');
@@ -51,25 +53,41 @@
 		}
 
 		self.resizeContainer();
-		self.startSlide();
-
+		// self.startSlide();
 	}
 	Plugin.prototype.startSlide = function() {
 		var self = this,
 				$slideItemFirst = self.$slideContainer.find(self.settings.slideItems).eq(0),
-				slideItemFirstW = $slideItemFirst.width();
+				$slideItemLast = self.$slideContainer.find(self.settings.slideItems).eq(self.slideItemsLength - 1),
+				slideItemFirstW = $slideItemFirst.width(),
+				slideItemLastW = $slideItemLast.width();
 
-		// スライドする要素の中で、一番最初の要素のmargin-leftを減らしていく
-		// 画面の外に出たら一番後ろに持っていく
-		// 以下、繰り返し
-		$slideItemFirst.animate({
-			marginLeft: parseInt($slideItemFirst.css('margin-left'), 10) - self.settings.slideDistance
-		}, self.settings.slideDuration, self.settings.slideEasing, function() {
-			if(Math.abs(parseInt($slideItemFirst.css('margin-left'), 10)) > slideItemFirstW) {
-				$slideItemFirst.appendTo(self.$slideContainer).css('margin-left', 0);
+		if($slideItemFirst.is(':animated')) return false;
+
+		if(!self.settings.reverse) {
+			// 右->左にスライドする
+			$slideItemFirst.animate({
+				marginLeft: parseInt($slideItemFirst.css('margin-left'), 10) - self.settings.slideDistance
+			}, self.settings.slideDuration, self.settings.slideEasing, function() {
+				if(Math.abs(parseInt($slideItemFirst.css('margin-left'), 10)) > slideItemFirstW) {
+					$slideItemFirst.appendTo(self.$slideContainer).css('margin-left', 0);
+				}
+				self.startSlide();
+			});
+		} else {
+			// 左->右にスライドする
+			if(parseInt($slideItemFirst.css('margin-left'), 10) >= 0) {
+				$slideItemLast.prependTo(self.$slideContainer).css('margin-left', -slideItemLastW);
+				self.startSlide();
+				return false;
 			}
-			self.startSlide();
-		});
+
+			$slideItemFirst.animate({
+				marginLeft: parseInt($slideItemFirst.css('margin-left'), 10) + self.settings.slideDistance
+			}, self.settings.slideDuration, self.settings.slideEasing, function() {
+				self.startSlide();
+			});
+		}
 	}
 	Plugin.prototype.stopSlide = function() {
 		var self = this;
@@ -95,6 +113,7 @@
 		self.slideContainerW = calcContainerSize(self.$slideContainer, self.$slideItems);
 		self.elementW = elementW;
 		self.$slideContainer.width(self.slideContainerW);
+		self.slideItemsLength = self.$slideItems.length;
 
 		// スライドを再スタートする
 		self.startSlide();
