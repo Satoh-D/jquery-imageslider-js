@@ -20,7 +20,8 @@
 				slideDuration: 1,
 				slideEasing: 'linear',
 				resizable: false,
-				reverse: false
+				reverse: false,
+				pause: true
 			};
 
 	function Plugin(element, options) {
@@ -50,6 +51,12 @@
 
 		if(self.settings.resizable) {
 			$(window).on('resize', function(){ self.resizeContainer(); });
+		}
+		if(self.settings.pause) {
+			self.$slideContainer.hover(
+				function() { self.stopSlide(); },
+				function() { self.startSlide(); }
+			);
 		}
 
 		self.resizeContainer();
