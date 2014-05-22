@@ -21,7 +21,7 @@
 				slideEasing: 'linear',
 				resizable: false,
 				reverse: false,
-				pause: true
+				pause: false
 			};
 
 	function Plugin(element, options) {
